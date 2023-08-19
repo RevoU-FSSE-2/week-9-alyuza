@@ -153,7 +153,6 @@ app.delete('/transaction/:id', (request, response) => {
         })
 })
 
-
 app.listen(port, () => {
     console.log(`⚡️Server is running at localhost:${port}`);
 });
