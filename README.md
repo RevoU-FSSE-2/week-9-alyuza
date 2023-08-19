@@ -33,31 +33,31 @@
 
 **GET**/user
 
-<img src="img/readme1.png" alt="screenshoot get all user" width="550px">
+<img src="img/readme1.png" alt="screenshoot get all user" width="750px">
 
 **GET**/user/:id
 
-<img src="img/readme2.png" alt="screenshoot get user id" width="550px">
+<img src="img/readme2.png" alt="screenshoot get user id" width="750px">
 
 **POST**/transaction
 
-<img src="img/readme3.png" alt="screenshoot post" width="550px">
+<img src="img/readme3.png" alt="screenshoot post" width="750px">
 
 **PUT**/transaction/:id
 
-<img src="img/readme4.png" alt="screenshoot put" width="550px">
+<img src="img/readme4.png" alt="screenshoot put" width="750px">
 
 **DELETE**/transaction/:id
 
-<img src="img/readme5.png" alt="screenshoot delete transaction" width="550px">
+<img src="img/readme5.png" alt="screenshoot delete transaction" width="750px">
 
 **MYSQL Connection** connect to Railway
 
-<img src="img/readme6.png" alt="screenshoot MySQL > Railway" width="550px">
+<img src="img/readme6.png" alt="screenshoot MySQL > Railway" width="750px">
 
 **Railway**
 
-<img src="img/readme7.png" alt="screenshoot Railway" width="550px">
+<img src="img/readme7.png" alt="screenshoot Railway" width="750px">
 
 ## DEPLOYMENT
 
