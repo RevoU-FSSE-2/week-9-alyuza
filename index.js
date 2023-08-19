@@ -27,7 +27,9 @@ const mysqlCon = mysql.createConnection({
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DB
 })
-mysqlCon.connect((err) => {
+const mysqlCon2 = mysql.createConnection(`mysql://root:3RG8oJP05CsjeTxJl1Aw@containers-us-west-169.railway.app:6784/railway`)
+
+mysqlCon2.connect((err) => {
     if (err) throw err
 
     console.log("mysql successfully connected")
@@ -37,7 +39,7 @@ app.use(bodyParser.json())
 
 // ====== get all user
 app.get('/user', (request, response) => {
-    mysqlCon.query("select * from revou.user", (err, result, fields) => {
+    mysqlCon2.query("select * from user", (err, result, fields) => {
         if (err) {
             console.error(err)
             response.status(500).json(commonResponse(null, "server error"))
@@ -53,80 +55,75 @@ app.get('/user', (request, response) => {
 app.get('/user/:id', async (request, response) => {
     const id = request.params.id
 
-    mysqlCon.query(`
-    SELECT u.id,
-	u.name,
-	u.address,
-	(
-		SELECT sum(t.amount) - (
-				SELECT sum(t.amount)
-				FROM transaction t
-				WHERE t.type = "expense"
-			)
+    mysqlCon2.query(`
+    SELECT u.id, u.name, u.address,
+	    (SELECT sum(t.amount) - (SELECT sum(t.amount)
+			FROM transaction t
+			WHERE t.type = "expense" and t.user_id = ${request.params.id} )
 		FROM transaction t
-		WHERE t.type = "income"
-	    ) as balance,
-	    (
-		select sum(t.amount)
-		from transaction t
-		where t.type = "expense"
-	    ) as expense
+		WHERE t.type = "income" and t.user_id = ${request.params.id}) as balance,
+	    (select sum(t.amount)
+		    from transaction t
+		    where t.type = "expense" and t.user_id = ${request.params.id}) as expense
         from user as u,
 	    transaction AS t
         WHERE u.id = ${request.params.id}
-        GROUP by u.id`, id, (err, result, fields) => {
-        if (err) {
-            console.error(err)
-            response.status(500).json(commonResponse(null, "server error"))
-            response.end
-            return
-        }
-        if (result.affectedRows !== 0) {
-            console.log("Transaction Connected", result)
-            response.status(200).json(commonResponse(result, null))
-            response.end
-        } else {
-            response.status(404).send("User ID is not found")
-        }
-    })
+        GROUP by u.id`,
+        (err, result, fields) => {
+            if (err) {
+                console.error(err)
+                response.status(500).json(commonResponse(null, "server error"))
+                response.end
+                return
+            }
+            if (result.affectedRows !== 0) {
+                console.log("Transaction Connected", result)
+                response.status(200).json(commonResponse(result, null))
+                response.end
+            } else {
+                response.status(404).send("User ID is not found")
+            }
+        })
 })
 
 // ====== post
 app.post('/transaction', (request, response) => {
     const body = request.body
 
-    mysqlCon.query(`
+    mysqlCon2.query(`
     insert into
-    revou.transaction (user_id, type, amount)
+    transaction (user_id, type, amount)
     values(?, ?, ?)`,
         [body.user_id, body.type, body.amount], (err, result, fields) => {
             if (err) {
                 console.error(err)
                 response.status(500).json(commonResponse(null, "Server error"))
+                response.end
                 return
             }
-            response.status(200).json(commonResponse({id: result.insertId}, null))
+            response.status(200).json(commonResponse({ id: result.insertId }, null))
+            response.end
         })
 })
 
 // ====== put
 app.put('/transaction/:id', (request, response) => {
-    const {type,amount,user_id} = request.body
-    console.log (request.body)
+    const { type, amount, user_id } = request.body
+    console.log(request.body)
 
-    mysqlCon.query (`
+    mysqlCon2.query(`
     update transaction
     set user_id = ${user_id}, type = ${type}, amount = ${amount}
-    where id =${request.params.id}`, (err,result,fields) => {
+    where id =${request.params.id}`, (err, result, fields) => {
         if (err) {
             console.error(err)
             response.status(500).json(commonResponse(null, "Server error"))
             response.end
             return
         }
-        if (result.affectedRows !== 0){
+        if (result.affectedRows !== 0) {
             console.log(" Transaction Success", result);
-            response.status(200).json(commonResponse(parseInt(request.params.id)),null)
+            response.status(200).json(commonResponse(parseInt(request.params.id)), null)
             response.end
         } else {
             response.status(404).send("User ID is not found")
@@ -136,24 +133,24 @@ app.put('/transaction/:id', (request, response) => {
 
 // ====== delete
 app.delete('/transaction/:id', (request, response) => {
-   mysqlCon.query (`
+    mysqlCon2.query(`
    delete from transaction
    where id = ${request.params.id}`,
-   (err,result,fields) => {
-    if (err) {
-        console.error(err)
-        response.status(500).json(commonResponse(null, "Server error"))
-        response.end
-        return
-    }
-    if (result.affectedRows !== 0){
-        console.log(" Transaction Success", result);
-        response.status(200).json(commonResponse(`Successfully removed ID : ${request.params.id}`))
-        response.end
-    } else {
-        response.status(404).send("User ID is not found")
-    }
-   })
+        (err, result, fields) => {
+            if (err) {
+                console.error(err)
+                response.status(500).json(commonResponse(null, "Server error"))
+                response.end
+                return
+            }
+            if (result.affectedRows !== 0) {
+                console.log(" Transaction Success", result);
+                response.status(200).json(commonResponse(`Successfully removed ID : ${request.params.id}`))
+                response.end
+            } else {
+                response.status(404).send("User ID is not found")
+            }
+        })
 })
 
 
