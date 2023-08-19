@@ -27,11 +27,10 @@ const mysqlCon = mysql.createConnection({
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DB
 })
+// ====== connect database to railway
 const mysqlCon2 = mysql.createConnection(`mysql://root:3RG8oJP05CsjeTxJl1Aw@containers-us-west-169.railway.app:6784/railway`)
-
 mysqlCon2.connect((err) => {
     if (err) throw err
-
     console.log("mysql successfully connected")
 })
 
