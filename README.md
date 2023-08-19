@@ -18,7 +18,7 @@
 - Update / Put a transaction
 - Delete a transaction
 
-## API Endpoints
+## API ENDPOINTS
 
 | Name  | HTTP Method | Endpoint | 
 | ----- | ----------- | ---------|
@@ -29,31 +29,40 @@
 | **Delete Transaction Data by ID** | `DELETE` | `/transaction/:id` |
 
 
-## Contracts
+## CONTRACTS
+
 **GET**/user
+
 <img src="img/readme1.png" alt="screenshoot get all user" width="550px">
 
 **GET**/user/:id
+
 <img src="img/readme2.png" alt="screenshoot get user id" width="550px">
 
 **POST**/transaction
+
 <img src="img/readme3.png" alt="screenshoot post" width="550px">
 
 **PUT**/transaction/:id
+
 <img src="img/readme4.png" alt="screenshoot put" width="550px">
 
 **DELETE**/transaction/:id
+
 <img src="img/readme5.png" alt="screenshoot delete transaction" width="550px">
 
 **MYSQL Connection** connect to Railway
+
 <img src="img/readme6.png" alt="screenshoot MySQL > Railway" width="550px">
 
 **Railway**
+
 <img src="img/readme7.png" alt="screenshoot Railway" width="550px">
 
 ## DEPLOYMENT
+
 Deployment link here
 
 
-## Contact Me
+## CONTACT ME
 [![Linkedin Badge](https://img.shields.io/badge/-Alyuza_Satrio_Prayogo-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/alyuzasp/) [![Youtube Badge](https://img.shields.io/badge/-Alyuza_Satrio_Prayogo-darkred?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@alyuza/about) [![Instagram Badge](https://img.shields.io/badge/-Alyuza_Satrio_Prayogo-black?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/alyuuza/)
