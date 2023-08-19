@@ -107,28 +107,27 @@ app.post('/transaction', (request, response) => {
 
 // ====== put
 app.put('/transaction/:id', (request, response) => {
+    const id = request.params.id;
     const { type, amount, user_id } = request.body
     console.log(request.body)
-
-    mysqlCon2.query(`
-    update transaction
-    set user_id = ${user_id}, type = ${type}, amount = ${amount}
-    where id =${request.params.id}`, (err, result, fields) => {
-        if (err) {
-            console.error(err)
-            response.status(500).json(commonResponse(null, "Server error"))
-            response.end
-            return
+    mysqlCon2.query(
+        `UPDATE transaction
+        SET user_id=?, type=?, amount=?
+        WHERE id=?`, [user_id, type, amount, id],
+        (err, result, fields) => {
+            if (err) {
+                console.error(err)
+                response.status(500).json((null), "Response error")
+                response.end()
+                return
+            }
+            console.log("transaction connected", result);
+            response.status(200).json({ id: id })
+            response.end()
         }
-        if (result.affectedRows !== 0) {
-            console.log(" Transaction Success", result);
-            response.status(200).json(commonResponse(parseInt(request.params.id)), null)
-            response.end
-        } else {
-            response.status(404).send("User ID is not found")
-        }
-    })
-})
+    )
+}
+);
 
 // ====== delete
 app.delete('/transaction/:id', (request, response) => {
@@ -155,3 +154,39 @@ app.delete('/transaction/:id', (request, response) => {
 app.listen(port, () => {
     console.log(`⚡️Server is running at localhost:${port}`);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// ====== put
+// app.put('/transaction/:id', (request, response) => {
+//     const { type, amount, user_id } = request.body
+//     console.log(request.body)
+
+//     mysqlCon2.query(`
+//     update transaction
+//     set user_id = ${user_id}, type = ${type}, amount = ${amount}
+//     where id=${request.params.id}`, (err, result, fields) => {
+//         if (err) {
+//             console.error(err)
+//             response.status(500).json(commonResponse(null, "Server error"))
+//             response.end
+//             return
+//         }
+//         if (result.affectedRows !== 0) {
+//             console.log(" Transaction Success", result);
+//             response.status(200).json(commonResponse(parseInt(request.params.id)), null)
+//             response.end
+//         } else {
+//             response.status(404).send("User ID is not found")
+//         }
+//     })
+// })
