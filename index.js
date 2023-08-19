@@ -130,7 +130,7 @@ app.put('/transaction/:id', (request, response) => {
 );
 
 // ====== delete
-app.delete('/delete/:id', (request, response) => {
+app.delete('/transaction/:id', (request, response) => {
     mysqlCon2.query(`
    delete from transaction
    where id = ${request.params.id}`,
